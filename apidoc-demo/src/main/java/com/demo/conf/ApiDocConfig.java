@@ -23,7 +23,7 @@ import java.io.File;
 public class ApiDocConfig {
     @Bean
     public ApiDocService generator() {
-        Const.codePath = Const.projectPath + "readingRoom-apidoc" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
+        Const.codePath = Const.projectPath + "apidoc-demo" + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator;
         return new ApiDocService();
     }
 }
