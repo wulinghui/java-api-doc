@@ -2,6 +2,7 @@ package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocModule;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.Set;
@@ -23,7 +24,7 @@ public interface ApidocModuleDao extends BaseMapper<ApidocModule> {
      * @return
      */
     @Select("select * from apidoc_module where packageName=#{packageName}")
-    Set<ApidocModule> selectByPackageName(String packageName);
+    Set<ApidocModule> selectByPackageName(@Param("packageName") String packageName);
 
     /**
      * 通过id查询classList
@@ -32,5 +33,5 @@ public interface ApidocModuleDao extends BaseMapper<ApidocModule> {
      * @return
      */
     @Select("select classList from apidoc_module where id =#{moduleId}")
-    String findClassListById(Integer moduleId);
+    String findClassListById(@Param("moduleId") Integer moduleId);
 }

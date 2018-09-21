@@ -27,8 +27,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.DataSource;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -65,6 +70,164 @@ public class ApiDocService {
     @Autowired
     private ApidocParamDao apidocParamDao;
 
+    private DataSource dataSource;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+        createTable();
+    }
+
+    /**
+     * 自动创建数据库的表
+     * apidoc-info   文档基本信息表
+     * apidoc-module 模块表
+     * apidoc-action 接口信息表
+     * apidoc-param  接口参数表
+     */
+    private void createTable() {
+        //apidoc-info   文档基本信息表
+        //apidoc-module 模块表
+        //apidoc-action 接口信息表
+        //apidoc-param  接口参数表
+        String createInfo = "CREATE TABLE `apidoc_info` (\n" +
+                "\t`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',\n" +
+                "\t`title` VARCHAR(200) NOT NULL COMMENT '文档标题' COLLATE 'utf8_bin',\n" +
+                "\t`description` TEXT NULL COMMENT '文档描述' COLLATE 'utf8_bin',\n" +
+                "\t`version` VARCHAR(20) NOT NULL DEFAULT '1.0.0' COMMENT '版本信息 如1.0.0' COLLATE 'utf8_bin',\n" +
+                "\t`packageName` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '包名，用于区别一个项目中的多个文档' COLLATE 'utf8_bin',\n" +
+                "\tPRIMARY KEY (`id`),\n" +
+                "\tUNIQUE INDEX `title_packageName` (`title`, `packageName`)\n" +
+                ")\n" +
+                "COMMENT='文件基本信息'\n" +
+                "COLLATE='utf8_bin'\n" +
+                "ENGINE=InnoDB\n" +
+                ";\n";
+        String createModule = "CREATE TABLE `apidoc_module` (\n" +
+                "\t`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',\n" +
+                "\t`name` VARCHAR(200) NOT NULL COMMENT '模块名称' COLLATE 'utf8_bin',\n" +
+                "\t`order` INT(11) NOT NULL COMMENT '排序',\n" +
+                "\t`packageName` VARCHAR(200) NOT NULL COMMENT '包名，区分不用的文档' COLLATE 'utf8_bin',\n" +
+                "\t`classList` VARCHAR(1000) NOT NULL COMMENT '类全名，多个之间用英文逗号隔开' COLLATE 'utf8_bin',\n" +
+                "\tPRIMARY KEY (`id`),\n" +
+                "\tUNIQUE INDEX `name_packageName` (`name`, `packageName`)\n" +
+                ")\n" +
+                "COMMENT='文档模块信息'\n" +
+                "COLLATE='utf8_bin'\n" +
+                "ENGINE=InnoDB\n" +
+                ";";
+        String createAction = "CREATE TABLE `apidoc_action` (\n" +
+                "\t`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',\n" +
+                "\t`name` VARCHAR(200) NOT NULL COMMENT '名称' COLLATE 'utf8_bin',\n" +
+                "\t`moduleId` INT(11) NOT NULL COMMENT '模块id',\n" +
+                "\t`order` INT(11) NOT NULL COMMENT '排序',\n" +
+                "\t`methodUUID` VARCHAR(200) NOT NULL COMMENT '方法的唯一标示符，方法名-形参类型,形参类型   \\\\n为了区别java方法的重载' COLLATE 'utf8_bin',\n" +
+                "\t`description` TEXT NULL COMMENT '接口描述' COLLATE 'utf8_bin',\n" +
+                "\t`requestDescription` TEXT NULL COMMENT '请求参数描述' COLLATE 'utf8_bin',\n" +
+                "\t`responseDescription` TEXT NULL COMMENT '响应参数描述' COLLATE 'utf8_bin',\n" +
+                "\tPRIMARY KEY (`id`),\n" +
+                "\tUNIQUE INDEX `moduleId_methodUUID` (`moduleId`, `methodUUID`)\n" +
+                ")\n" +
+                "COMMENT='文档接口信息'\n" +
+                "COLLATE='utf8_bin'\n" +
+                "ENGINE=InnoDB\n" +
+                ";\n";
+        String createParam = "CREATE TABLE `apidoc_param` (\n" +
+                "\t`id` INT(11) NOT NULL AUTO_INCREMENT COMMENT '主键',\n" +
+                "\t`name` VARCHAR(100) NULL DEFAULT NULL COMMENT '名称' COLLATE 'utf8_bin',\n" +
+                "\t`dataType` VARCHAR(50) NULL DEFAULT NULL COMMENT '数据类型' COLLATE 'utf8_bin',\n" +
+                "\t`description` VARCHAR(500) NULL DEFAULT NULL COMMENT '描述' COLLATE 'utf8_bin',\n" +
+                "\t`defaultValue` VARCHAR(500) NULL DEFAULT NULL COMMENT '默认值' COLLATE 'utf8_bin',\n" +
+                "\t`required` TINYINT(4) NOT NULL DEFAULT '1' COMMENT '是否必须',\n" +
+                "\t`actionId` INT(11) NOT NULL COMMENT '接口id',\n" +
+                "\t`returnd` TINYINT(4) NOT NULL DEFAULT '0' COMMENT '是否是返回值',\n" +
+                "\t`pid` INT(11) NOT NULL DEFAULT '0' COMMENT '父参数id',\n" +
+                "\t`pclassName` VARCHAR(200) NOT NULL DEFAULT '0' COMMENT '父类名  所属类名' COLLATE 'utf8_bin',\n" +
+                "\tPRIMARY KEY (`id`),\n" +
+                "\tINDEX `FK_apidoc_param_apidoc_action` (`actionId`)\n" +
+                ")\n" +
+                "COMMENT='文档参数信息'\n" +
+                "COLLATE='utf8_bin'\n" +
+                "ENGINE=InnoDB\n" +
+                ";\n";
+
+        if (!existTable("apidoc_info")) {
+            createNewTable(createInfo);
+        }
+        if (!existTable("apidoc_module")) {
+            createNewTable(createModule);
+        }
+        if (!existTable("apidoc_action")) {
+            createNewTable(createAction);
+        }
+        if (!existTable("apidoc_param")) {
+            createNewTable(createParam);
+        }
+    }
+
+    /**
+     * 执行sql
+     */
+    private boolean existTable(String param) {
+        String sql = "SELECT count(*) FROM information_schema.TABLES where table_name = ?";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        int execute = -1;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, param);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                execute = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, preparedStatement);
+        }
+        return execute > 0;
+    }
+
+    /**
+     * 关闭数据库连接
+     * @param connection
+     * @param preparedStatement
+     */
+    private void close(Connection connection, PreparedStatement preparedStatement) {
+        if (null != preparedStatement) {
+            try {
+                preparedStatement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (null != connection) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 创建表格
+     */
+    private void createNewTable(String sql) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(connection, preparedStatement);
+        }
+    }
 
     /**
      * 获取文档基本信息

@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
+/**
+ * mybatis-plus配置
+ */
 @EnableTransactionManagement
 @Configuration
 @MapperScan({"com.apidoc.dao"}) //扫描mybatis中dao层mapper

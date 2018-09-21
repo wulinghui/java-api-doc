@@ -2,6 +2,7 @@ package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocAction;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ApidocActionDao extends BaseMapper<ApidocAction> {
      * @return
      */
     @Select("select id,`name`,moduleId,`order`,methodUUID from apidoc_action where moduleId=#{moduleId}")
-    List<ApidocAction> selectByModuleId(Integer moduleId);
+    List<ApidocAction> selectByModuleId(@Param("moduleId") Integer moduleId);
 
 
     /**
@@ -33,7 +34,7 @@ public interface ApidocActionDao extends BaseMapper<ApidocAction> {
      * @return
      */
     @Select("select description from apidoc_action where id = #{id}")
-    String selectDescriptionById(Integer id);
+    String selectDescriptionById(@Param("id") Integer id);
 
     /**
      * 通过id查询接口请求参数的描述
@@ -42,7 +43,7 @@ public interface ApidocActionDao extends BaseMapper<ApidocAction> {
      * @return
      */
     @Select("select requestDescription from apidoc_action where id = #{id}")
-    String selectRequestDescriptionById(Integer id);
+    String selectRequestDescriptionById(@Param("id") Integer id);
 
     /**
      * 通过id查询接口响应参数的描述
@@ -51,5 +52,5 @@ public interface ApidocActionDao extends BaseMapper<ApidocAction> {
      * @return
      */
     @Select("select responseDescription from apidoc_action where id = #{id}")
-    String selectResponseDescriptionById(Integer id);
+    String selectResponseDescriptionById(@Param("id") Integer id);
 }

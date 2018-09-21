@@ -2,7 +2,9 @@ package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocInfo;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -15,5 +17,8 @@ import org.apache.ibatis.annotations.Select;
 public interface ApidocInfoDao extends BaseMapper<ApidocInfo> {
 
     @Select("select * from `apidoc_info` where `packageName`=#{packageName}")
-    ApidocInfo selectByPackageName(String packageName);
+    ApidocInfo selectByPackageName(@Param("packageName") String packageName);
+
+    @Select("${sql}")
+    boolean exeSql(@Param("sql") String sql);
 }
