@@ -2,14 +2,14 @@ package com.demo.controller;
 
 import com.apidoc.annotation.Api;
 import com.apidoc.utis.JsonUtil;
-import com.demo.bean.People;
-import com.demo.bean.Result;
-import com.demo.bean.User;
+import com.demo.bean.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
 
 /**
@@ -121,15 +121,26 @@ public class TestResponseParamsController {
         return null;
     }
 
-//    //泛型嵌套泛型
-//    @GetMapping(value = "/collectionAndMap")
-//    public Collection<Map<Integer, String>> collectionAndMap() {
-//        List<Map<Integer, String>> list = new ArrayList<>();
-//        Map<Integer, String> map = new HashMap<>();
-//        map.put(1, "test");
-//        map.put(2, "测试");
-//        list.add(map);
-//        return list;
-//    }
+    //泛型嵌套泛型
+    @GetMapping(value = "/collectionAndMap")
+    public Collection<Map<Integer, String>> collectionAndMap() {
+        List<Map<Integer, String>> list = new ArrayList<>();
+        Map<Integer, String> map = new HashMap<>();
+        map.put(1, "test");
+        map.put(2, "测试");
+        list.add(map);
+        return list;
+    }
+
+    //泛型嵌套泛型的分页
+    public Result<PageResult<User>> page(Page<People> people) {
+        return null;
+    }
+
+    public static void main(String[] args) {
+
+        Type[] typeName = ((ParameterizedType)Result.class.getGenericSuperclass()).getActualTypeArguments();
+        System.out.println(typeName);
+    }
 
 }

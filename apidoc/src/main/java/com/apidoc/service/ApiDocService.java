@@ -662,11 +662,20 @@ public class ApiDocService {
             Type[] parameterArgTypes = aType.getActualTypeArguments();
             //todo 先支持collection和map类型 后期有需要再加
             if (Collection.class.isAssignableFrom(tclass)) {//是Collection
-                Class typeClass = (Class) parameterArgTypes[0];
-                item.setDataType(Const.array + typeClass.getSimpleName());
-                item.updateById();
-                list.add(item);
-                isType(list, actionId, typeClass.getSimpleName().toLowerCase(), typeClass, null, tclass, item.getId(), isSelf, isReturn);
+                Type type = parameterArgTypes[0];
+                String[] split = type.getTypeName().split("<");
+                if (split.length > 0) {
+                    Class typeClass = null;
+                    try {
+                        typeClass = Class.forName(split[0]);
+                        item.setDataType(Const.array + typeClass.getSimpleName());
+                        item.updateById();
+                        list.add(item);
+                        isType(list, actionId, typeClass.getSimpleName().toLowerCase(), typeClass, type, tclass, item.getId(), isSelf, isReturn);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else if (Map.class.isAssignableFrom(tclass)) {// 是 Map map比较特殊，只能运行时得到值，用户只能页面手动修改了
                 item.setDataType(Const.object + "Map");
                 item.updateById();
