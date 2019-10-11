@@ -75,7 +75,7 @@ public class ApiDocService {
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-        createTable();
+//        createTable();
     }
 
     /**
@@ -169,7 +169,8 @@ public class ApiDocService {
      * 执行sql
      */
     private boolean existTable(String param) {
-        String sql = "SELECT count(*) FROM information_schema.TABLES where table_name = ?";
+//        String sql = "SELECT count(*) FROM information_schema.TABLES where table_name = ?";
+        String sql = "SELECT 0 FROM " + param + "where 1=2";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         int execute = -1;

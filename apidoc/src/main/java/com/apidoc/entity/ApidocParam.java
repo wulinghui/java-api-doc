@@ -1,6 +1,5 @@
 package com.apidoc.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -153,7 +152,6 @@ public class ApidocParam extends Model<ApidocParam> {
         this.list = list;
     }
 
-    @Override
     protected Serializable pkVal() {
         return this.id;
     }
