@@ -258,7 +258,7 @@ public class ApiDocService {
      * @return boolean
      */
     public boolean updateInfo(ApidocInfo apidocInfo) {
-        return apidocInfo.updateById();
+        return  apidocInfoDao.exeSql(apidocInfo.getUpdateSql().toString());
     }
 
     /**
@@ -297,7 +297,7 @@ public class ApiDocService {
                     String classListStr = apidocModule.getClassList();
                     if (!classListStr.contains(className)) {
                         apidocModule.setClassList(apidocModule.getClassList() + "," + className);
-                        apidocModule.updateById();
+                        apidocInfoDao.exeSql(apidocModule.getUpdateSql().toString());
                     }
                 } else {//模块不存在时，新增
                     apidocModule = new ApidocModule();
@@ -306,7 +306,7 @@ public class ApiDocService {
                     apidocModule.setPackageName(packageName);
                     apidocModule.setClassList(className);
                     //插入数据库
-                    apidocModule.insert();
+                    apidocInfoDao.exeSql(apidocModule.getInsertSql().toString());
                 }
                 //添加到返回集合
                 modules4front.add(apidocModule);
@@ -383,7 +383,7 @@ public class ApiDocService {
                                 action.setOrder(Integer.MAX_VALUE);
                                 action.setModuleId(moduleId);
                                 //写入数据库
-                                action.insert();
+                                apidocInfoDao.exeSql(action.getInsertSql().toString());
                             }
                             //添加到list
                             actions.add(action);
@@ -641,7 +641,7 @@ public class ApiDocService {
             item.setDescription(paramName);
             item.setPclassName("0");
         }
-        item.insert();
+        apidocInfoDao.exeSql(item.getInsertSql().toString());
 
         //设置参数类型
         //数组 或者多维数组
@@ -650,7 +650,7 @@ public class ApiDocService {
             Class typeClass = tclass.getComponentType();
             String shortName = typeClass.getSimpleName();
             item.setDataType(Const.array + shortName);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             //添加到list
             list.add(item);
             //处理多维数组
@@ -670,7 +670,7 @@ public class ApiDocService {
                     try {
                         typeClass = Class.forName(split[0]);
                         item.setDataType(Const.array + typeClass.getSimpleName());
-                        item.updateById();
+                        apidocInfoDao.exeSql(item.getUpdateSql().toString());
                         list.add(item);
                         isType(list, actionId, typeClass.getSimpleName().toLowerCase(), typeClass, type, tclass, item.getId(), isSelf, isReturn);
                     } catch (ClassNotFoundException e) {
@@ -679,7 +679,7 @@ public class ApiDocService {
                 }
             } else if (Map.class.isAssignableFrom(tclass)) {// 是 Map map比较特殊，只能运行时得到值，用户只能页面手动修改了
                 item.setDataType(Const.object + "Map");
-                item.updateById();
+                apidocInfoDao.exeSql(item.getUpdateSql().toString());
                 list.add(item);
             } else if (parameterArgTypes.length == 1 && tclass.getName().contains("Result")) {// 针对自定义类型 Result<T> 特殊处理
                 //保存对象中属性名为data的类型
@@ -691,37 +691,37 @@ public class ApiDocService {
         //数字
         if (Number.class.isAssignableFrom(tclass) || Const.number.equals(typeMap.get(tclass))) {
             item.setDataType(Const.number);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
         }
         //字符串
         if (CharSequence.class.isAssignableFrom(tclass) || Character.class.isAssignableFrom(tclass) || Const.string.equals(typeMap.get(tclass))) {
             item.setDataType(Const.string);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
         }
         //boolean
         if (Boolean.class.isAssignableFrom(tclass) || Const.booleann.equals(typeMap.get(tclass))) {
             item.setDataType(Const.booleann);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
         }
         //文件 MultipartFile
         if (InputStreamSource.class.isAssignableFrom(tclass)) {
             item.setDataType(Const.file);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
         }
         //文件 MultipartFile
         if (Date.class.isAssignableFrom(tclass)) {
             item.setDataType(Const.date);
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
         }
         //自定义对象类型
         if (isMyClass(tclass)) {
             item.setDataType(Const.object + tclass.getSimpleName());//自定义对象类型为对象的名称
-            item.updateById();
+            apidocInfoDao.exeSql(item.getUpdateSql().toString());
             list.add(item);
             //获得对象的所有字段 包括继承的所有父类的属性
             Field[] fields = ReflectUtil.getFieldsDirectly(tclass, true);
@@ -938,7 +938,7 @@ public class ApiDocService {
      * @return
      */
     public boolean updateActionDescription(ApidocAction apidocAction) {
-        return apidocAction.updateById();
+        return  apidocInfoDao.exeSql(apidocAction.getUpdateSql().toString());
     }
 
     /**
@@ -948,7 +948,7 @@ public class ApiDocService {
      * @return
      */
     public boolean updateParam(ApidocParam apidocParam) {
-        return apidocParam.updateById();
+        return  apidocInfoDao.exeSql(apidocParam.getUpdateSql().toString());
     }
 
     /**
@@ -958,7 +958,7 @@ public class ApiDocService {
      * @return
      */
     public Integer addParam(ApidocParam apidocParam) {
-        apidocParam.insert();
+        apidocInfoDao.exeSql(apidocParam.getInsertSql().toString());
         return apidocParam.getId();
     }
 

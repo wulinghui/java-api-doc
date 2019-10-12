@@ -51,33 +51,9 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
         "#{description,jdbcType=VARCHAR}, #{version,jdbcType=VARCHAR}, ",
         "#{packagename,jdbcType=VARCHAR})"
      */
-    public  void insert()  {
+    public  void insert1()  {
         try {
-            Field[] fields = ReflectUtil.getFields(this.getClass());
-            StringBuilder sb =new StringBuilder(" INSERT INTO ");
-            TableName annotation = this.getClass().getAnnotation(TableName.class);
-            sb.append(annotation.value());
-            sb.append(" ( ");
-            StringBuilder sb2 =new StringBuilder(" )VALUES( ");
-            for (Field field : fields) {
-                Object o = getObjectForApiDoc(field);
-                String name = field.getName();
-                if( "serialVersionUID".equalsIgnoreCase(name) ) continue;
-                if( "WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name) ) continue;
-                if ( o == null) continue;;
-                field.setAccessible(true);
-                sb.append(name);
-                sb.append( ',' );
-                //
-                sb2.append("'");
-                sb2.append(o.toString());
-                sb2.append("',");
-            }
-            sb.deleteCharAt(sb.length()-1);
-            sb2.deleteCharAt(sb2.length()-1);
-            sb2.append(')');
-            sb.append(sb2.toString());
-            System.out.println("insert== " +sb );
+            StringBuilder sb = getInsertSql();
             SqlExecutor.execute(getConnection(),sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,37 +68,9 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
      *           "packageName = #{packagename,jdbcType=VARCHAR}",
      *         "where id = #{id,jdbcType=INTEGER}"
      */
-    public  boolean updateById() {
+    public  boolean updateById1() {
         try {
-            Field[] fields = ReflectUtil.getFields(this.getClass());
-            StringBuilder sb = new StringBuilder(" UPDATE ");
-            TableName annotation = this.getClass().getAnnotation(TableName.class);
-            sb.append(annotation.value());
-            sb.append(" set ");
-            String name = null;
-            Object o = null;
-            for (Field field : fields) {
-                field.setAccessible(true);
-                name = field.getName();
-                if ("id".equalsIgnoreCase(name)) continue;
-                if ("serialVersionUID".equalsIgnoreCase(name)) continue;
-                if ("WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name)) continue;
-                o = getObjectForApiDoc(field);
-                if (o == null) continue;
-
-                sb.append(name);
-                sb.append(" = ");
-                sb.append("'");
-                sb.append(o.toString());
-                sb.append("',");
-            }
-            sb.deleteCharAt(sb.length() - 1);
-            sb.append(" WHERE ID='");
-            Field field = ReflectUtil.getField(this.getClass(), "id");
-            o = getObjectForApiDoc(field);
-            sb.append(o);
-            sb.append("'");
-            System.out.println("updateById== " + sb);
+            StringBuilder sb = getUpdateSql();
             SqlExecutor.execute(getConnection(), sb.toString());
             return true;
         } catch (Exception e) {
@@ -130,9 +78,79 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             return false;
         }
     }
+    public StringBuilder getInsertSql(){
+        Field[] fields = ReflectUtil.getFields(this.getClass());
+        StringBuilder sb =new StringBuilder(" INSERT INTO ");
+        TableName annotation = this.getClass().getAnnotation(TableName.class);
+        sb.append(annotation.value());
+        sb.append(" ( ");
+        StringBuilder sb2 =new StringBuilder(" )VALUES( ");
+        for (Field field : fields) {
+            Object o = getObjectForApiDoc(field);
+            String name = field.getName();
+            if( "serialVersionUID".equalsIgnoreCase(name) ) continue;
+            if( "WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name) ) continue;
+            if ( o == null) continue;;
+            field.setAccessible(true);
+            sb.append(name);
+            sb.append( ',' );
+            //
+            sb2.append("'");
+            sb2.append(o.toString());
+            sb2.append("',");
+        }
+        sb.deleteCharAt(sb.length()-1);
+        sb2.deleteCharAt(sb2.length()-1);
+        sb2.append(')');
+        sb.append(sb2.toString());
+        System.out.println("insert== " +sb );
+        return sb;
+    }
 
-    private Object getObjectForApiDoc(Field field) throws IllegalAccessException {
-        Object o =  field.get(this);;
+
+    public StringBuilder getUpdateSql()  {
+        Field[] fields = ReflectUtil.getFields(this.getClass());
+        StringBuilder sb = new StringBuilder(" UPDATE ");
+        TableName annotation = this.getClass().getAnnotation(TableName.class);
+        sb.append(annotation.value());
+        sb.append(" set ");
+        String name = null;
+        Object o = null;
+        for (Field field : fields) {
+            field.setAccessible(true);
+            name = field.getName();
+            if ("id".equalsIgnoreCase(name)) continue;
+            if ("serialVersionUID".equalsIgnoreCase(name)) continue;
+            if ("WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name)) continue;
+            o = getObjectForApiDoc(field);
+            if (o == null) continue;
+
+            sb.append(name);
+            sb.append(" = ");
+            sb.append("'");
+            sb.append(o.toString());
+            sb.append("',");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append(" WHERE ID='");
+        Field field = ReflectUtil.getField(this.getClass(), "id");
+        o = getObjectForApiDoc(field);
+        sb.append(o);
+        sb.append("'");
+        System.out.println("updateById== " + sb);
+        return sb;
+    }
+
+    private Object getObjectForApiDoc(Field field)  {
+        Object o = null;
+        try {
+            if( field == null ) return o;
+            field.setAccessible(true);
+            o = field.get(this);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        ;
         if( o != null && o.getClass().equals(Boolean.class) ){
             Boolean a = (Boolean) o;
             if( a ){
