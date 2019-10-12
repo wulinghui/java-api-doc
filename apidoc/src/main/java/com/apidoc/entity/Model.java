@@ -36,7 +36,6 @@ import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 @Component
-@JsonIgnoreProperties(value = {"WEB_APPLICATION_CONTEXT"})
 public abstract class Model<T extends com.apidoc.entity.Model> implements Serializable {
     @JsonIgnore
     public static ApplicationContext WEB_APPLICATION_CONTEXT;
@@ -61,7 +60,7 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             sb.append(" ( ");
             StringBuilder sb2 =new StringBuilder(" )VALUES( ");
             for (Field field : fields) {
-                Object o = field.get(this);
+                Object o = getObjectForApiDoc(field);
                 String name = field.getName();
                 if( "serialVersionUID".equalsIgnoreCase(name) ) continue;
                 if( "WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name) ) continue;
@@ -101,25 +100,27 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             sb.append(annotation.value());
             sb.append(" set ");
             String name = null;
+            Object o = null;
             for (Field field : fields) {
                 field.setAccessible(true);
                 name = field.getName();
                 if ("id".equalsIgnoreCase(name)) continue;
                 if ("serialVersionUID".equalsIgnoreCase(name)) continue;
                 if ("WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name)) continue;
-                Object o = field.get(this);
+                o = getObjectForApiDoc(field);
                 if (o == null) continue;
-                ;
+
                 sb.append(name);
                 sb.append(" = ");
                 sb.append("'");
-                sb.append(field.get(this).toString());
+                sb.append(o.toString());
                 sb.append("',");
             }
             sb.deleteCharAt(sb.length() - 1);
             sb.append(" WHERE ID='");
             Field field = ReflectUtil.getField(this.getClass(), "id");
-            sb.append(field.get(this));
+            o = getObjectForApiDoc(field);
+            sb.append(o);
             sb.append("'");
             System.out.println("updateById== " + sb);
             SqlExecutor.execute(getConnection(), sb.toString());
@@ -127,6 +128,27 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private Object getObjectForApiDoc(Field field) throws IllegalAccessException {
+        Object o =  field.get(this);;
+        if( o != null && o.getClass().equals(Boolean.class) ){
+            Boolean a = (Boolean) o;
+            if( a ){
+                o = 1;
+            }else{
+                o = 0;
+            }
+        }
+        return o;
+    }
+
+    public static void main(String[] args) {
+        Object abc = true;
+        System.out.println(abc.getClass());
+        if( !abc.getClass().isPrimitive() && abc.getClass().equals(Boolean.class) ){
+            System.out.println(1111111111);
         }
     }
 }
