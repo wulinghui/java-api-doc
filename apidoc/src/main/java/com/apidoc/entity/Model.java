@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.toolkit.TableInfoHelper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +36,12 @@ import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 @Component
+@JsonIgnoreProperties(value = {"WEB_APPLICATION_CONTEXT"})
 public abstract class Model<T extends com.apidoc.entity.Model> implements Serializable {
+    @JsonIgnore
     public static ApplicationContext WEB_APPLICATION_CONTEXT;
-    public Connection getConnection() throws SQLException {
+    @JsonIgnore
+    private Connection getConnection() throws SQLException {
         return WEB_APPLICATION_CONTEXT.getBean(DataSource.class).getConnection();
     }
     /*
