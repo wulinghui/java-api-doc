@@ -1,11 +1,12 @@
 package com.apidoc.dao;
 
 import cn.hutool.core.util.StrUtil;
+import com.apidoc.entity.ApidocAction;
 import com.apidoc.entity.ApidocInfo;
+import com.apidoc.entity.ApidocModule;
+import com.apidoc.entity.ApidocParam;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 /**
  * <p>
@@ -31,4 +32,17 @@ public interface ApidocInfoDao extends BaseMapper<ApidocInfo> {
 
     @Select("${sql}")
     Boolean exeSql0(@Param("sql") String sql);
+
+
+    @InsertProvider(type=ApidocInfoSqlProvider.class, method="insertAction")
+    int insertAction(ApidocAction record);
+
+    @InsertProvider(type=ApidocInfoSqlProvider.class, method="insertInfo")
+    int insertInfo(ApidocInfo record);
+
+    @InsertProvider(type=ApidocInfoSqlProvider.class, method="insertModule")
+    int insertModule(ApidocModule record);
+
+    @InsertProvider(type=ApidocInfoSqlProvider.class, method="insertParam")
+    int insertParam(ApidocParam record);
 }

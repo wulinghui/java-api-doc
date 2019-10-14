@@ -306,7 +306,10 @@ public class ApiDocService {
                     apidocModule.setPackageName(packageName);
                     apidocModule.setClassList(className);
                     //插入数据库
-                    apidocInfoDao.exeSql(apidocModule.getInsertSql().toString());
+//                    apidocInfoDao.exeSql(apidocModule.getInsertSql().toString());
+
+                    int i = apidocInfoDao.insertModule(apidocModule);
+                    apidocModule.setId(i);
                 }
                 //添加到返回集合
                 modules4front.add(apidocModule);
@@ -383,7 +386,9 @@ public class ApiDocService {
                                 action.setOrder(Integer.MAX_VALUE);
                                 action.setModuleId(moduleId);
                                 //写入数据库
-                                apidocInfoDao.exeSql(action.getInsertSql().toString());
+//                                apidocInfoDao.exeSql(action.getInsertSql().toString());
+                                int i1 = apidocInfoDao.insertAction(action);
+                                action.setId(i1);
                             }
                             //添加到list
                             actions.add(action);
@@ -641,8 +646,9 @@ public class ApiDocService {
             item.setDescription(paramName);
             item.setPclassName("0");
         }
-        apidocInfoDao.exeSql(item.getInsertSql().toString());
-
+//        apidocInfoDao.exeSql(item.getInsertSql().toString());
+        int i = apidocInfoDao.insertParam(item);
+        item.setId(i);
         //设置参数类型
         //数组 或者多维数组
         if (tclass.isArray()) {
@@ -958,7 +964,9 @@ public class ApiDocService {
      * @return
      */
     public Integer addParam(ApidocParam apidocParam) {
-        apidocInfoDao.exeSql(apidocParam.getInsertSql().toString());
+//        apidocInfoDao.exeSql(apidocParam.getInsertSql().toString());
+        int i = apidocInfoDao.insertParam(apidocParam);
+        apidocParam.setId(i);
         return apidocParam.getId();
     }
 
