@@ -103,7 +103,7 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
         sb2.deleteCharAt(sb2.length()-1);
         sb2.append(')');
         sb.append(sb2.toString());
-        System.out.println("insert== " +sb );
+//        System.out.println("insert== " +sb );
         return sb;
     }
 
@@ -137,7 +137,7 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
         o = getObjectForApiDoc(field);
         sb.append(o);
         sb.append("'");
-        System.out.println("updateById== " + sb);
+//        System.out.println("updateById== " + sb);
         return sb;
     }
 
