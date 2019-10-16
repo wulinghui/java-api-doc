@@ -12,35 +12,35 @@ public class ApidocInfoSqlProvider {
         sql.INSERT_INTO("apidoc_action");
 
         if (record.getId() != null) {
-            sql.VALUES("id", "#{id,jdbcType=INTEGER}");
+            sql.VALUES("`id`", "#{id,jdbcType=INTEGER}");
         }
 
         if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
+            sql.VALUES("`name`", "#{name,jdbcType=VARCHAR}");
         }
 
         if (record.getModuleId() != null) {
-            sql.VALUES("moduleId", "#{moduleId,jdbcType=INTEGER}");
+            sql.VALUES("`moduleId`", "#{moduleId,jdbcType=INTEGER}");
         }
 
         if (record.getOrder() != null) {
-            sql.VALUES("order", "#{order,jdbcType=INTEGER}");
+            sql.VALUES("`order`", "#{order,jdbcType=INTEGER}");
         }
 
         if (record.getMethodUUID() != null) {
-            sql.VALUES("methodUUID", "#{methodUUID,jdbcType=VARCHAR}");
+            sql.VALUES("`methodUUID`", "#{methodUUID,jdbcType=VARCHAR}");
         }
 
         if (record.getDescription() != null) {
-            sql.VALUES("description", "#{description,jdbcType=LONGVARCHAR}");
+            sql.VALUES("`description`", "#{description,jdbcType=LONGVARCHAR}");
         }
 
         if (record.getRequestDescription() != null) {
-            sql.VALUES("requestDescription", "#{requestDescription,jdbcType=LONGVARCHAR}");
+            sql.VALUES("`requestDescription`", "#{requestDescription,jdbcType=LONGVARCHAR}");
         }
 
         if (record.getResponseDescription() != null) {
-            sql.VALUES("responseDescription", "#{responseDescription,jdbcType=LONGVARCHAR}");
+            sql.VALUES("`responseDescription`", "#{responseDescription,jdbcType=LONGVARCHAR}");
         }
         return sql.toString();
     }
@@ -50,23 +50,23 @@ public class ApidocInfoSqlProvider {
         sql.INSERT_INTO("apidoc_info");
 
         if (record.getId() != null) {
-            sql.VALUES("id", "#{id,jdbcType=INTEGER}");
+            sql.VALUES("`id`", "#{id,jdbcType=INTEGER}");
         }
 
         if (record.getTitle() != null) {
-            sql.VALUES("title", "#{title,jdbcType=VARCHAR}");
+            sql.VALUES("`title`", "#{title,jdbcType=VARCHAR}");
         }
 
         if (record.getDescription() != null) {
-            sql.VALUES("description", "#{description,jdbcType=VARCHAR}");
+            sql.VALUES("`description`", "#{description,jdbcType=VARCHAR}");
         }
 
         if (record.getVersion() != null) {
-            sql.VALUES("version", "#{version,jdbcType=VARCHAR}");
+            sql.VALUES("`version`", "#{version,jdbcType=VARCHAR}");
         }
 
         if (record.getPackageName() != null) {
-            sql.VALUES("packageName", "#{packageName,jdbcType=VARCHAR}");
+            sql.VALUES("`packageName`", "#{packageName,jdbcType=VARCHAR}");
         }
 
         return sql.toString();
@@ -77,23 +77,23 @@ public class ApidocInfoSqlProvider {
         sql.INSERT_INTO("apidoc_module");
 
         if (record.getId() != null) {
-            sql.VALUES("id", "#{id,jdbcType=INTEGER}");
+            sql.VALUES("`id`", "#{id,jdbcType=INTEGER}");
         }
 
         if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
+            sql.VALUES("`name`", "#{name,jdbcType=VARCHAR}");
         }
 
         if (record.getOrder() != null) {
-            sql.VALUES("order", "#{order,jdbcType=INTEGER}");
+            sql.VALUES("`order`", "#{order,jdbcType=INTEGER}");
         }
 
         if (record.getPackageName() != null) {
-            sql.VALUES("packageName", "#{packageName,jdbcType=VARCHAR}");
+            sql.VALUES("`packageName`", "#{packageName,jdbcType=VARCHAR}");
         }
 
         if (record.getClassList() != null) {
-            sql.VALUES("classList", "#{classList,jdbcType=VARCHAR}");
+            sql.VALUES("`classList`", "#{classList,jdbcType=VARCHAR}");
         }
 
         return sql.toString();
@@ -103,43 +103,43 @@ public class ApidocInfoSqlProvider {
         sql.INSERT_INTO("apidoc_param");
 
         if (record.getId() != null) {
-            sql.VALUES("id", "#{id,jdbcType=INTEGER}");
+            sql.VALUES("`id`", "#{id,jdbcType=INTEGER}");
         }
 
         if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
+            sql.VALUES("`name`", "#{name,jdbcType=VARCHAR}");
         }
 
         if (record.getDataType() != null) {
-            sql.VALUES("dataType", "#{dataType,jdbcType=VARCHAR}");
+            sql.VALUES("`dataType`", "#{dataType,jdbcType=VARCHAR}");
         }
 
         if (record.getDescription() != null) {
-            sql.VALUES("description", "#{description,jdbcType=VARCHAR}");
+            sql.VALUES("`description`", "#{description,jdbcType=VARCHAR}");
         }
 
         if (record.getDefaultValue() != null) {
-            sql.VALUES("defaultValue", "#{defaultValue,jdbcType=VARCHAR}");
+            sql.VALUES("`defaultValue`", "#{defaultValue,jdbcType=VARCHAR}");
         }
 
         if (record.getRequired() != null) {
-            sql.VALUES("required", "#{required,jdbcType=TINYINT}");
+            sql.VALUES("`required`", "#{required,jdbcType=TINYINT}");
         }
 
         if (record.getActionId() != null) {
-            sql.VALUES("actionId", "#{actionId,jdbcType=INTEGER}");
+            sql.VALUES("`actionId`", "#{actionId,jdbcType=INTEGER}");
         }
 
         if (record.getReturnd() != null) {
-            sql.VALUES("returnd", "#{returnd,jdbcType=TINYINT}");
+            sql.VALUES("`returnd`", "#{returnd,jdbcType=TINYINT}");
         }
 
         if (record.getPid() != null) {
-            sql.VALUES("pid", "#{pid,jdbcType=INTEGER}");
+            sql.VALUES("`pid`", "#{pid,jdbcType=INTEGER}");
         }
 
         if (record.getPclassName() != null) {
-            sql.VALUES("pclassName", "#{pclassName,jdbcType=VARCHAR}");
+            sql.VALUES("`pclassName`", "#{pclassName,jdbcType=VARCHAR}");
         }
 
         return sql.toString();
