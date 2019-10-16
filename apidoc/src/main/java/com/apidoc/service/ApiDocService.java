@@ -245,7 +245,7 @@ public class ApiDocService {
         } else {
             ApidocInfo info = new ApidocInfo();
             info.setPackageName(packageName);
-            apidocInfoDao.insert(info);
+            apidocInfoDao.insertInfo(info);
             return info;
         }
     }

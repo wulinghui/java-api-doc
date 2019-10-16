@@ -16,7 +16,7 @@ import org.apache.ibatis.annotations.*;
  * @author 此代码为自动生成
  * @since 2018-09-11
  */
-public interface ApidocInfoDao extends BaseMapper<ApidocInfo> {
+public interface ApidocInfoDao  {
 
     @Select("select * from `apidoc_info` where `packageName`=#{packageName}")
     ApidocInfo selectByPackageName(@Param("packageName") String packageName);
@@ -46,3 +46,4 @@ public interface ApidocInfoDao extends BaseMapper<ApidocInfo> {
     @InsertProvider(type=ApidocInfoSqlProvider.class, method="insertParam")
     int insertParam(ApidocParam record);
 }
+

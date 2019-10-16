@@ -2,8 +2,7 @@ package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocAction;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import java.util.List;
  * @author 此代码为自动生成
  * @since 2018-09-14
  */
-public interface ApidocActionDao extends BaseMapper<ApidocAction> {
+public interface ApidocActionDao  {
 
     /**
      * 通过模块id查询接口列表
@@ -53,4 +52,10 @@ public interface ApidocActionDao extends BaseMapper<ApidocAction> {
      */
     @Select("select responseDescription from apidoc_action where id = #{id}")
     String selectResponseDescriptionById(@Param("id") Integer id);
+
+    @Delete("delete from apidoc_action where id = #{id}")
+    int deleteById(Integer id);
+
+    @UpdateProvider(type = ApidocActionSqlProvider.class,method = "updateByPrimaryKeySelective")
+    int updateById(ApidocAction apidocAction);
 }

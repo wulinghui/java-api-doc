@@ -16,7 +16,7 @@ import java.util.List;
  * @author 此代码为自动生成
  * @since 2018-09-15
  */
-public interface ApidocParamDao extends BaseMapper<ApidocParam> {
+public interface ApidocParamDao {
 
     /**
      * 通过actionId查询参数列表
@@ -29,4 +29,7 @@ public interface ApidocParamDao extends BaseMapper<ApidocParam> {
 
     @Delete("delete from apidoc_param where actionId=#{actionId}")
     int deleteByActionId(@Param("actionId") Integer actionId);
+
+    @Delete("delete from apidoc_param where id=#{id}")
+    int deleteById(Integer id);
 }
