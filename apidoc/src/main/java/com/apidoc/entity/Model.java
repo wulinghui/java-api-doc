@@ -92,7 +92,9 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             if( "WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name) ) continue;
             if ( o == null) continue;;
             field.setAccessible(true);
+            sb.append("`");
             sb.append(name);
+            sb.append("`");
             sb.append( ',' );
             //
             sb2.append("'");
@@ -124,8 +126,9 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             if ("WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name)) continue;
             o = getObjectForApiDoc(field);
             if (o == null) continue;
-
+            sb.append("`");
             sb.append(name);
+            sb.append("`");
             sb.append(" = ");
             sb.append("'");
             sb.append(o.toString());

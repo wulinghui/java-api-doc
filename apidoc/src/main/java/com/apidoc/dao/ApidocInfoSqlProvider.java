@@ -42,7 +42,7 @@ public class ApidocInfoSqlProvider {
         if (record.getResponseDescription() != null) {
             sql.VALUES("responseDescription", "#{responseDescription,jdbcType=LONGVARCHAR}");
         }
-        return sql.toString();
+        return record.getInsertSql().toString();//sql.toString();
     }
 
     public String insertInfo(ApidocInfo record) {
@@ -69,7 +69,7 @@ public class ApidocInfoSqlProvider {
             sql.VALUES("packageName", "#{packageName,jdbcType=VARCHAR}");
         }
 
-        return sql.toString();
+        return record.getInsertSql().toString();//.toString();
     }
 
     public String insertModule(ApidocModule record) {
@@ -96,7 +96,7 @@ public class ApidocInfoSqlProvider {
             sql.VALUES("classList", "#{classList,jdbcType=VARCHAR}");
         }
 
-        return sql.toString();
+        return record.getInsertSql().toString();//sql.toString();
     }
     public String insertParam(ApidocParam record) {
         SQL sql = new SQL();
@@ -142,6 +142,6 @@ public class ApidocInfoSqlProvider {
             sql.VALUES("pclassName", "#{pclassName,jdbcType=VARCHAR}");
         }
 
-        return sql.toString();
+        return record.getInsertSql().toString();//sql.toString();
     }
 }

@@ -21,7 +21,8 @@ public class ApiDocController {
 
     @Autowired
     private ApiDocService apiDocService;
-
+    @Value("${api.md5}")
+    private String md5;
     //是否开启文档功能
     @Value("${apidoc}")
     private boolean openApiDoc;
@@ -122,6 +123,9 @@ public class ApiDocController {
      */
     @PostMapping("/addParam")
     public Integer addParam(@RequestBody ApidocParam apidocParam) {
+        // bug add is not null
+        apidocParam.setReturnd(true);
+        //
         return apiDocService.addParam(apidocParam);
     }
 
@@ -133,7 +137,13 @@ public class ApiDocController {
         return apiDocService.deleteParam(id);
     }
 
-
+    @DeleteMapping("/deleteParam/{md5}/{id}")
+    public boolean deleteParam(@PathVariable("id") Integer md5,@PathVariable("id") Integer id ) {
+        if( this.md5.equals(md5) ){
+            return apiDocService.deleteParam(id);
+        }
+        return false;
+    }
 }
 
 
