@@ -75,7 +75,7 @@ public class ApiDocService {
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
-//        createTable();
+        createTable();
     }
 
     /**
@@ -177,17 +177,14 @@ public class ApiDocService {
         try {
             connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, param);
+//            preparedStatement.setString(1, param);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                execute = resultSet.getInt(1);
-            }
+           return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         } finally {
             close(connection, preparedStatement);
         }
-        return execute > 0;
     }
 
     /**
