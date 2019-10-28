@@ -124,7 +124,11 @@ public class ApiDocController {
     @PostMapping("/addParam")
     public Integer addParam(@RequestBody ApidocParam apidocParam) {
         // bug add is not null
-        apidocParam.setReturnd(true);
+        if( !"0".equals( String.valueOf(apidocParam.getPid()) ) ){
+            apidocParam.setReturnd(true);
+        }else{
+            apidocParam.setReturnd(false);
+        }
         //
         return apiDocService.addParam(apidocParam);
     }

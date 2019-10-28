@@ -154,7 +154,7 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             e.printStackTrace();
         }
         ;
-        if( o != null && o.getClass().equals(Boolean.class) ){
+        if( o != null && (o.getClass().equals(Boolean.class) || o.getClass().equals(boolean.class) ) ){
             Boolean a = (Boolean) o;
             if( a ){
                 o = 1;

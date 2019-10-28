@@ -35,4 +35,13 @@ public class Params {
     public void setParams(List<ApidocParam> params) {
         this.params = params;
     }
+
+    @Override
+    public String toString() {
+        return "Params{" +
+                "type='" + type + '\'' +
+                ", description='" + description + '\'' +
+                ", params=" + params +
+                '}';
+    }
 }

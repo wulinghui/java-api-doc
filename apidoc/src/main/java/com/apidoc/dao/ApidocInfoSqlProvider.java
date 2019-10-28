@@ -131,7 +131,11 @@ public class ApidocInfoSqlProvider {
         }
 
         if (record.getReturnd() != null) {
-            sql.VALUES("returnd", "#{returnd,jdbcType=TINYINT}");
+            if( !"0".equals(record.getPid()) ){
+                sql.VALUES("returnd", "1");
+            }else{
+                sql.VALUES("returnd", "0");
+            }
         }
 
         if (record.getPid() != null) {

@@ -2,6 +2,8 @@ package com.apidoc.service;
 
 
 import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import com.apidoc.annotation.Api;
 import com.apidoc.common.Const;
 import com.apidoc.dao.ApidocActionDao;
@@ -43,7 +45,7 @@ import java.util.*;
  */
 @Service
 public class ApiDocService {
-
+    private static final Log log = LogFactory.get();
     /**
      * 封装基本类型和参数类型的对应关心
      */
@@ -96,8 +98,7 @@ public class ApiDocService {
                 "\t`description` TEXT NULL COMMENT '文档描述' COLLATE 'utf8_bin',\n" +
                 "\t`version` VARCHAR(20) NOT NULL DEFAULT '1.0.0' COMMENT '版本信息 如1.0.0' COLLATE 'utf8_bin',\n" +
                 "\t`packageName` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '包名，用于区别一个项目中的多个文档' COLLATE 'utf8_bin',\n" +
-                "\tPRIMARY KEY (`id`),\n" +
-                "\tUNIQUE INDEX `title_packageName` (`title`, `packageName`)\n" +
+                "\tPRIMARY KEY (`id`)\n"+
                 ")\n" +
                 "COMMENT='文件基本信息'\n" +
                 "COLLATE='utf8_bin'\n" +
@@ -109,8 +110,7 @@ public class ApiDocService {
                 "\t`order` INT(11) NOT NULL COMMENT '排序',\n" +
                 "\t`packageName` VARCHAR(200) NOT NULL COMMENT '包名，区分不用的文档' COLLATE 'utf8_bin',\n" +
                 "\t`classList` VARCHAR(1000) NOT NULL COMMENT '类全名，多个之间用英文逗号隔开' COLLATE 'utf8_bin',\n" +
-                "\tPRIMARY KEY (`id`),\n" +
-                "\tUNIQUE INDEX `name_packageName` (`name`, `packageName`)\n" +
+                "\tPRIMARY KEY (`id`)\n" +
                 ")\n" +
                 "COMMENT='文档模块信息'\n" +
                 "COLLATE='utf8_bin'\n" +
@@ -125,8 +125,7 @@ public class ApiDocService {
                 "\t`description` TEXT NULL COMMENT '接口描述' COLLATE 'utf8_bin',\n" +
                 "\t`requestDescription` TEXT NULL COMMENT '请求参数描述' COLLATE 'utf8_bin',\n" +
                 "\t`responseDescription` TEXT NULL COMMENT '响应参数描述' COLLATE 'utf8_bin',\n" +
-                "\tPRIMARY KEY (`id`),\n" +
-                "\tUNIQUE INDEX `moduleId_methodUUID` (`moduleId`, `methodUUID`)\n" +
+                "\tPRIMARY KEY (`id`)\n" +
                 ")\n" +
                 "COMMENT='文档接口信息'\n" +
                 "COLLATE='utf8_bin'\n" +
@@ -221,7 +220,7 @@ public class ApiDocService {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         } finally {
             close(connection, preparedStatement);
         }
@@ -533,6 +532,7 @@ public class ApiDocService {
     /**
      * 将list数据转换为tree结构数据
      */
+
     private List<ApidocParam> list2Tree(List<ApidocParam> params) {
         if (null == params || params.size() == 0) {
             return null;
@@ -552,8 +552,10 @@ public class ApiDocService {
             }
         }
         //如果参数个数为一个 且是对象类型且拥有子参数 去掉第一个参数 =》符合spring的参数规范
-        if (trees.size() == 1 && trees.get(0).getList() != null && trees.get(0).getDataType().contains("object")) {
-            return trees.get(0).getList();
+        ApidocParam apidocParam = trees.get(0);
+        log.debug("trees={},\n apidocParam={}",trees,apidocParam);
+        if (trees.size() == 1 && apidocParam.getList() != null && apidocParam.getDataType().contains("object")) {
+            return apidocParam.getList();
         }
         return trees;
     }

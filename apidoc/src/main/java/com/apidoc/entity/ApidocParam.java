@@ -156,4 +156,20 @@ public class ApidocParam extends Model<ApidocParam> {
         return this.id;
     }
 
+    @Override
+    public String toString() {
+        return "ApidocParam{" +
+                "id=" + id +
+                ", pid=" + pid +
+                ", name='" + name + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", description='" + description + '\'' +
+                ", defaultValue='" + defaultValue + '\'' +
+                ", required=" + required +
+                ", returnd=" + returnd +
+                ", actionId=" + actionId +
+                ", pclassName='" + pclassName + '\'' +
+                ", list=" + list +
+                '}';
+    }
 }

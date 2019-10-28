@@ -51,4 +51,14 @@ public class Detail {
         this.responseParam = responseParam;
     }
 
+    @Override
+    public String toString() {
+        return "Detail{" +
+                "mapping='" + mapping + '\'' +
+                ", requestMethod='" + requestMethod + '\'' +
+                ", description='" + description + '\'' +
+                ", requestParam=" + requestParam +
+                ", responseParam=" + responseParam +
+                '}';
+    }
 }

@@ -32,5 +32,12 @@ public class Info {
         this.version = version;
     }
 
-
+    @Override
+    public String toString() {
+        return "Info{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", version='" + version + '\'' +
+                '}';
+    }
 }
