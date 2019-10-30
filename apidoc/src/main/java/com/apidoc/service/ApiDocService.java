@@ -163,7 +163,35 @@ public class ApiDocService {
             createNewTable(createParam);
         }
     }
+    public void execAddMapDoc(String sql,String pid){
+        // SELECT
+        //	CREATE_TIME,
+        //	(
+        //		SELECT
+        //			CONCAT(I.LAST_, I.FIRST_)
+        //		FROM
+        //			COLLECTION_USER_INFO U
+        //		JOIN ACT_ID_USER I ON U.CORRESPOND_ID = I.ID_
+        //		WHERE
+        //			U.ID = D.WX_USERID
+        //	) AS jixuweixiuren
+        //FROM
+        //	JIHE_DUOCI_WEIXIU D
+        //WHERE
+        // 1 =2
 
+
+        // 1.sql结果集为空  , 动态sql获得map
+        // 2.取出所有map对应的key。
+        // 3.for循环执行
+        // 3.1 通过sql
+        //     SELECT COLUMN_NAME,column_comment FROM INFORMATION_SCHEMA.Columns
+        //     查询出对应的注释
+        // 3.2 把对应的注释插入对应的一条记录下面。
+        // INSERT INTO `jihe`.`apidoc_param` (`id`, `name`, `dataType`, `description`, `defaultValue`, `required`, `actionId`, `returnd`, `pid`, `pclassName`) VALUES ('118', 'id', 'string 字符串', '维修组id', 'null', '1', '47', '1', '116', '0');
+        //  pid为map对应的pid
+
+    }
     /**
      * 执行sql
      */

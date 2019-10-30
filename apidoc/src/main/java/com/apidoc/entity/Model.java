@@ -124,6 +124,7 @@ public abstract class Model<T extends com.apidoc.entity.Model> implements Serial
             if ("id".equalsIgnoreCase(name)) continue;
             if ("serialVersionUID".equalsIgnoreCase(name)) continue;
             if ("WEB_APPLICATION_CONTEXT".equalsIgnoreCase(name)) continue;
+            if( "list".equalsIgnoreCase(name) ) continue;
             o = getObjectForApiDoc(field);
             if (o == null) continue;
             sb.append("`");

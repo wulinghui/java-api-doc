@@ -169,7 +169,7 @@ public class ApidocParam extends Model<ApidocParam> {
                 ", returnd=" + returnd +
                 ", actionId=" + actionId +
                 ", pclassName='" + pclassName + '\'' +
-                ", list=" + list +
+                ", list=" +
                 '}';
     }
 }
