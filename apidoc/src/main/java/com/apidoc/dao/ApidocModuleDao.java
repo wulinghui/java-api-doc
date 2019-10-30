@@ -4,6 +4,7 @@ import com.apidoc.entity.ApidocModule;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -39,4 +40,7 @@ public interface ApidocModuleDao  {
 
     @UpdateProvider(type = ApidocModuleSqlProvider.class,method = "updateByPrimaryKeySelective")
     int updateById(ApidocModule m);
+
+    @SelectProvider(type=ApidocModuleSqlProvider.class, method="selSql")
+    Map<String,Object> selSql(String odd);
 }

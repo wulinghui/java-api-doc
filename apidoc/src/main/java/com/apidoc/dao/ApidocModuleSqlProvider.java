@@ -3,8 +3,12 @@ package com.apidoc.dao;
 import com.apidoc.entity.ApidocModule;
 import org.apache.ibatis.jdbc.SQL;
 
-public class ApidocModuleSqlProvider {
+import java.util.Map;
 
+public class ApidocModuleSqlProvider {
+    public String selSql(String odd){
+        return odd;
+    }
     public String insertSelective(ApidocModule record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("apidoc_module");

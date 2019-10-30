@@ -163,7 +163,11 @@ public class ApiDocService {
             createNewTable(createParam);
         }
     }
-    public void execAddMapDoc(String sql,String pid){
+    /**
+     * 通过sql语句的结果集往pid下面插入注释。
+     */
+    public void execAddMapDoc(String sql,int pid){
+        if(pid < 1) return;
         // SELECT
         //	CREATE_TIME,
         //	(
@@ -179,18 +183,41 @@ public class ApiDocService {
         //	JIHE_DUOCI_WEIXIU D
         //WHERE
         // 1 =2
-
-
         // 1.sql结果集为空  , 动态sql获得map
+        Map<String, Object> stringObjectMap = apidocModuleDao.selSql(sql + " LIMIT 1");
+        System.out.println( stringObjectMap );
         // 2.取出所有map对应的key。
         // 3.for循环执行
-        // 3.1 通过sql
-        //     SELECT COLUMN_NAME,column_comment FROM INFORMATION_SCHEMA.Columns
-        //     查询出对应的注释
-        // 3.2 把对应的注释插入对应的一条记录下面。
-        // INSERT INTO `jihe`.`apidoc_param` (`id`, `name`, `dataType`, `description`, `defaultValue`, `required`, `actionId`, `returnd`, `pid`, `pclassName`) VALUES ('118', 'id', 'string 字符串', '维修组id', 'null', '1', '47', '1', '116', '0');
-        //  pid为map对应的pid
-
+        String selectStr = "SELECT COLUMN_NAME,column_comment FROM INFORMATION_SCHEMA.Columns where COLUMN_NAME = '%s' and LENGTH(column_comment) > 0 LIMIT 1";
+        String insertStr =  "INSERT INTO `apidoc_param` (`id`, `name`, `dataType`, `description`, `defaultValue`, `required`, `actionId`, `returnd`, `pid`, `pclassName`) VALUES ('118', 'id', 'string 字符串', '维修组id', 'null', '1', '47', '1', '116', '0')";
+        // 4. 通过pid查询apidoc_param对象
+        ApidocParam apidocParam = this.apidocParamDao.selectById(pid);
+        apidocParam.setPid(pid);
+        apidocParam.setDataType("string 字符串");
+        for (String s : stringObjectMap.keySet()) {
+            // 3.1 通过sql
+            //     SELECT COLUMN_NAME,column_comment FROM INFORMATION_SCHEMA.Columns
+            Map<String, Object> colMap = apidocModuleDao.selSql( String.format(selectStr , s ) );
+            //
+            /** 驼峰转下划线(简单写法，效率低于{@link #humpToLine2(String)}) */
+            String columnComment = String.valueOf(colMap.get("columnComment"));
+            columnComment = columnComment.replaceAll("[A-Z]", "_$0").toLowerCase();
+            apidocParam.setDescription( columnComment );
+            apidocParamDao.insertSelective(apidocParam);
+            System.out.println( String.format("往pid=[%s],插入=[%s],id=[%s]" , pid , colMap , apidocParam.getId()) );
+            //     查询出对应的注释
+            // 3.2 把对应的注释插入对应的一条记录下面。
+            // INSERT INTO `jihe`.`apidoc_param` (`id`, `name`, `dataType`, `description`, `defaultValue`, `required`, `actionId`, `returnd`, `pid`, `pclassName`) VALUES ('118', 'id', 'string 字符串', '维修组id', 'null', '1', '47', '1', '116', '0');
+            //  pid为map对应的pid
+        }
+    }
+    /**
+     * 通过pid批量删除。
+     */
+    public void execDelMapDoc(int pid){
+        if(pid < 1) return;
+        String sql = "delete from apidoc_param where pid = " + pid;
+        apidocInfoDao.exeSql(sql);
     }
     /**
      * 执行sql
