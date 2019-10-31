@@ -1,6 +1,7 @@
 package com.apidoc.service;
 
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.log.Log;
 import cn.hutool.log.LogFactory;
@@ -37,6 +38,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 生成API文档工具类
@@ -200,9 +203,18 @@ public class ApiDocService {
             Map<String, Object> colMap = apidocModuleDao.selSql( String.format(selectStr , s ) );
             //
             /** 驼峰转下划线(简单写法，效率低于{@link #humpToLine2(String)}) */
-            String columnComment = String.valueOf(colMap.get("columnComment"));
-            columnComment = columnComment.replaceAll("[A-Z]", "_$0").toLowerCase();
+            Set<String> strings = colMap.keySet();
+            String columnCommentKey = "";
+            for (String string : strings) {
+                if ( string.toUpperCase().contains("COMMENT") ){
+                    columnCommentKey = string;
+                    break;
+                }
+            }
+            String columnComment = String.valueOf(colMap.get(columnCommentKey));
             apidocParam.setDescription( columnComment );
+//            s = s.replaceAll("[A-Z]", "_$0").toLowerCase();
+            apidocParam.setName(lineToHump(s));
             apidocParamDao.insertSelective(apidocParam);
             System.out.println( String.format("往pid=[%s],插入=[%s],id=[%s]" , pid , colMap , apidocParam.getId()) );
             //     查询出对应的注释
@@ -210,6 +222,18 @@ public class ApiDocService {
             // INSERT INTO `jihe`.`apidoc_param` (`id`, `name`, `dataType`, `description`, `defaultValue`, `required`, `actionId`, `returnd`, `pid`, `pclassName`) VALUES ('118', 'id', 'string 字符串', '维修组id', 'null', '1', '47', '1', '116', '0');
             //  pid为map对应的pid
         }
+    }
+    /** 下划线转驼峰 */
+    private static Pattern linePattern = Pattern.compile("_(\\w)");
+    public static String lineToHump(String str) {
+        str = str.toLowerCase();
+        Matcher matcher = linePattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
     /**
      * 通过pid批量删除。
