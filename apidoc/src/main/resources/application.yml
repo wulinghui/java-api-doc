@@ -1,8 +1,5 @@
 #apidoc
 apidoc: true
-#
-server:
-  port: 9082
 api:
   md5: 123456
 eureka:

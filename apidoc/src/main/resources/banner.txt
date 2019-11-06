@@ -1,9 +1,26 @@
 
-              .__    .___
-_____  ______ |__| __| _/____   ____
-\__  \ \____ \|  |/ __ |/  _ \_/ ___\
- / __ \|  |_> >  / /_/ (  <_> )  \___
-(____  /   __/|__\____ |\____/ \___  >
-     \/|__|           \/           \/
+                                                                                     bbbbbbbb
+                                                                                     b::::::b
+                                                                                     b::::::b
+                                                                                     b::::::b
+                                                                                      b:::::b
+   qqqqqqqqq   qqqqq         xxxxxxx      xxxxxxx         nnnn  nnnnnnnn              b:::::bbbbbbbbb
+  q:::::::::qqq::::q          x:::::x    x:::::x          n:::nn::::::::nn            b::::::::::::::bb
+ q:::::::::::::::::q           x:::::x  x:::::x           n::::::::::::::nn           b::::::::::::::::b
+q::::::qqqqq::::::qq            x:::::xx:::::x            nn:::::::::::::::n          b:::::bbbbb:::::::b
+q:::::q     q:::::q              x::::::::::x               n:::::nnnn:::::n          b:::::b    b::::::b
+q:::::q     q:::::q               x::::::::x                n::::n    n::::n          b:::::b     b:::::b
+q:::::q     q:::::q               x::::::::x                n::::n    n::::n          b:::::b     b:::::b
+q::::::q    q:::::q              x::::::::::x               n::::n    n::::n          b:::::b     b:::::b
+q:::::::qqqqq:::::q             x:::::xx:::::x              n::::n    n::::n          b:::::bbbbbb::::::b
+ q::::::::::::::::q            x:::::x  x:::::x             n::::n    n::::n          b::::::::::::::::b
+  qq::::::::::::::q           x:::::x    x:::::x            n::::n    n::::n          b:::::::::::::::b
+    qqqqqqqq::::::q          xxxxxxx      xxxxxxx           nnnnnn    nnnnnn          bbbbbbbbbbbbbbbb
+            q:::::q
+            q:::::q
+           q:::::::q
+           q:::::::q
+           q:::::::q
+           qqqqqqqqq
 
-                ==> apidoc      -- 千禧大魔王
+                ==> apidoc                     --  哈哈哈哈哈哈哈！！！
