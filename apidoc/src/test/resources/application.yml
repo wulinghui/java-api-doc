@@ -1,4 +1,7 @@
 #apidoc
+server:
+  port: 9082
+
 apidoc: true
 api:
   md5: 123456
