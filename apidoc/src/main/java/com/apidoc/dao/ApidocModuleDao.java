@@ -1,7 +1,6 @@
 package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocModule;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.Map;
@@ -15,6 +14,7 @@ import java.util.Set;
  * @author 此代码为自动生成
  * @since 2018-09-13
  */
+@Mapper
 public interface ApidocModuleDao  {
 
     /**

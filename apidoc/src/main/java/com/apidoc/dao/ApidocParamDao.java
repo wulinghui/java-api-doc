@@ -1,8 +1,6 @@
 package com.apidoc.dao;
 
-import com.apidoc.entity.ApidocInfo;
 import com.apidoc.entity.ApidocParam;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 
@@ -16,6 +14,7 @@ import java.util.List;
  * @author 此代码为自动生成
  * @since 2018-09-15
  */
+@Mapper
 public interface ApidocParamDao {
     @Select("select * from `apidoc_param` where `id`=#{id}")
     ApidocParam selectById(@Param("id") int id);

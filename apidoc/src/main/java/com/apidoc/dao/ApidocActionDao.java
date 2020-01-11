@@ -1,7 +1,6 @@
 package com.apidoc.dao;
 
 import com.apidoc.entity.ApidocAction;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -14,6 +13,7 @@ import java.util.List;
  * @author 此代码为自动生成
  * @since 2018-09-14
  */
+@Mapper
 public interface ApidocActionDao  {
 
     /**

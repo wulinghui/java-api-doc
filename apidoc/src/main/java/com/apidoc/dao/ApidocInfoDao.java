@@ -1,12 +1,13 @@
 package com.apidoc.dao;
 
-import cn.hutool.core.util.StrUtil;
 import com.apidoc.entity.ApidocAction;
 import com.apidoc.entity.ApidocInfo;
 import com.apidoc.entity.ApidocModule;
 import com.apidoc.entity.ApidocParam;
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -16,6 +17,7 @@ import org.apache.ibatis.annotations.*;
  * @author 此代码为自动生成
  * @since 2018-09-11
  */
+@Mapper
 public interface ApidocInfoDao  {
 
     @Select("select * from `apidoc_info` where `packageName`=#{packageName}")
