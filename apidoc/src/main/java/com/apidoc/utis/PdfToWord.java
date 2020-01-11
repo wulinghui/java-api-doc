@@ -54,7 +54,6 @@ public class PdfToWord {
 
     public void readFile(String filePath) throws Exception{
         List<String> stringList = new ArrayList<>();
-        List<IPhone> IphoneList = new ArrayList<>();
         IPhone iPhone = new IPhone();
         File file = new File(filePath);
         BufferedReader reader = null;
@@ -62,7 +61,6 @@ public class PdfToWord {
         int line =0;
         int toLong =0;
         String keyword = "APLXS-VZW";
-        boolean flag = true;
         String[] arrayStr = null;
         String[] dnaStr = null;
         reader = new BufferedReader(new InputStreamReader(new FileInputStream(file),"GBK"));
@@ -70,8 +68,6 @@ public class PdfToWord {
             if (content.contains(keyword)){
                 stringList.add(content);
             }
-            stringList.add(content);
-
         }
         log.debug(stringList.toString());
         for (String  value: stringList) {
